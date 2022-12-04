@@ -16,6 +16,11 @@ enum Roles {
   User
 }
 
+enum Roles1 {
+  Is_paid
+  Not_paid
+}
+
 model Users {
   userID     Int      @id @default(autoincrement())
   U_name     String
@@ -25,41 +30,55 @@ model Users {
   U_Address  String
   JiondAt    DateTime @default(now())
   Role       Roles    @default(User)
+  order      Order[]
 }
 
 model Order {
-  Order_ID  Int      @id @default(autoincrement())
-  UserID    Int
-  U_address String
-  CreateAt  DateTime @default(now())
+  Order_ID   Int         @id @default(autoincrement())
+  UserID     Int
+  U_address  String
+  CreateAt   DateTime    @default(now())
+  connect    Users       @relation(fields: [UserID], references: [userID])
+  order_item Ored_item[]
+  Role       Roles1      @default(Not_paid)
 }
 
 model Ored_item {
-  ID        Int      @id @default(autoincrement())
+  ID        Int       @id @default(autoincrement())
   Produt_id Int
   UserID    Int
   price     Int
-  createAt  DateTime @default(now())
+  createAt  DateTime  @default(now())
   Order_ID  Int
+  connect   Order     @relation(fields: [Order_ID], references: [Order_ID])
+  Product   Product[]
 }
 
 model Product {
-  Pro_ID    Int    @id @default(autoincrement())
+  Pro_ID    Int         @id @default(autoincrement())
   Pro_name  String
   Pro_price String
-}
-
-model Store {
-  St_ID      Int      @id @default(autoincrement())
-  St_Name    String
-  St_Address String
-  JoindAt    DateTime @default(now())
+  ord_item  Int
+  connect   Ored_item   @relation(fields: [ord_item], references: [ID])
+  inventory Inventory[]
 }
 
 model Inventory {
   Pro_ID       Int
-  St_ID        Int @id
+  St_ID        Int     @id
   St_Available Int
+  Product_ID   Int
+  connect      Product @relation(fields: [Product_ID], references: [Pro_ID])
+  Store        Store[]
+}
+
+model Store {
+  St_ID      Int       @id @default(autoincrement())
+  St_Name    String
+  St_Address String
+  JoindAt    DateTime  @default(now())
+  inver_ID   Int
+  connect    Inventory @relation(fields: [inver_ID], references: [St_ID])
 }
 
 model Cart {
