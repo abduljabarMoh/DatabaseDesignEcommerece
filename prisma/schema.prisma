@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Roles {
+  Admin
+  Suppreadmin
+  User
+}
+
 model Users {
   userID     Int      @id @default(autoincrement())
   U_name     String
@@ -18,6 +24,7 @@ model Users {
   U_phone    String
   U_Address  String
   JiondAt    DateTime @default(now())
+  Role       Roles    @default(User)
 }
 
 model Order {
