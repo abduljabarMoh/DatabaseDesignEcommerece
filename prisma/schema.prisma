@@ -25,7 +25,6 @@ model Users {
   U_Address  String
   JiondAt    DateTime @default(now())
   Role       Roles    @default(User)
-  UserID  []
 }
 
 model Order {
@@ -64,9 +63,25 @@ model Inventory {
 }
 
 model Cart {
-  Car_ID  Int   @id @default(autoincrement())
-  UserID  Int
-  Pro_ID  Int
-  St_ID   Int
-  connect Users @relation(fields: [UserID], references: [userID])
+  Car_ID Int @id @default(autoincrement())
+  UserID Int
+  Pro_ID Int
+  St_ID  Int
+}
+
+model Discount {
+  dis_ID      Int    @id @default(autoincrement())
+  Dis_name    String
+  Des         String
+  Dis_Percent Int
+  CreateAt    String
+}
+
+model Payment {
+  Pay_ID   Int      @id @default(autoincrement())
+  Order_ID Int
+  Amount   Int
+  Proider  String
+  status   String
+  Create   DateTime @default(now())
 }
